@@ -10,6 +10,8 @@ import plotly.express as px
 import pandas as pd
 
 
+import salary_exploration
+
 EXTERNAL_STYLESHEETS = [
     'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
     {
@@ -38,7 +40,7 @@ def _create_app():
 
     app = dash.Dash(__name__, external_stylesheets = EXTERNAL_STYLESHEETS)
 
-    df = pd.read_csv('data/20220529T121639Z/country_job_salary_normalized.csv')
+    df = salary_exploration.get_country_job_salary_normalized()
 
     fig = px.bar(df, x = 'Job', y = 'Euro Salary', color = 'Country', barmode = 'group')
 

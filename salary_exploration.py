@@ -17,6 +17,23 @@ DEAFULT_COUNTRY_SEARCH = ['Italy', 'Czech Republic', 'Germany', 'Spain', 'United
 DEAFULT_JOB_SEARCH = ['Data Engineer', 'Data Scientist', 'Embedded Software Engineer', 'Pippo']
 
 
+def get_country_job_salary_normalized():
+    ''' 
+    Get country job salary normalized data
+
+    Returns:
+        df: country job salary normalized data
+    '''
+    if os.path.isfile('data/20220529T121639Z/country_job_salary_normalized.csv') is False:
+        transform_data.normalize_salary('data//20220529T121639Z/country_job_salary.csv')
+    else:
+        pass
+
+    df = pd.read_csv('data/20220529T121639Z/country_job_salary_normalized.csv')
+
+    return df
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=  'Salary Exploration')
     parser.add_argument('--date_string', default = datetime.datetime.now().strftime(DATETIME_FORMAT), help = 'Date in format YYYYMMMDDTHHMMSSZ')

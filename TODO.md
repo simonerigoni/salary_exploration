@@ -5,13 +5,16 @@
 
 ## To Do
 
-- [ ] Implement data visualization with dash
 
 ## In Progress
 
+- [ ] Clean code
+- [ ] Remove dt_string
+- [ ] Test end to end
 
 ## Done ✓
 
-- [ ] Initialize repository
-- [ ] Implement data extraction
-- [ ] Implement data trasformation
+- [x] Initialize repository
+- [x] Implement data extraction
+- [x] Implement data trasformation
+- [x] Implement data visualization with dash
