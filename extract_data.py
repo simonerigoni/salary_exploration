@@ -1,173 +1,170 @@
 # Scrape data from https://www.payscale.com/research/IT/Job=Data_Engineer/Salary
 #
-# python extract_data.py
+# python extract_data.py --country='United States' --job='Data Engineer'
 
+import os
 import argparse
 import time
-import selenium
 from selenium import webdriver
-from selenium.webdriver.firefox.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-
-# from selenium.webdriver.support.select import Select
-# # from selenium.webdriver.support.ui import WebDriverWait
-# # from selenium.webdriver.common.by import By
-# # from selenium.webdriver.support import expected_conditions as EC
-# from bs4 import BeautifulSoup
-# import pandas as pd
+from selenium.webdriver.common.by import By
+import pickle
 
 
-BASE_URL = 'https://www.payscale.com/research/_COUNTRY_CODE_/Job=_JOB_NAME_/Salary'
 SLEEP_TIME = 5
 
 
-def get_salary(country_code, job):
+def _get_country_code(country):
+    '''
+    Get the country for a specific code
+
+    Parameters:
+        country: Country to search
+
+    Returns:
+        country_code: Code of the searched country
+    '''
+    print('Get country code')
+    country_code_countries = {}
+
+    if os.path.isdir('data') is True:
+        if os.path.isfile('data/country_code_countries.pkl') is True:
+            with open('data/country_code_countries.pkl', 'rb') as input_file:
+                country_code_countries = pickle.load(input_file)
+        else:
+            country_code_countries = _get_country_code_countries()
+            with open('data/country_code_countries.pkl', 'wb') as output_file:
+                pickle.dump(country_code_countries, output_file)
+
+        if country in country_code_countries.values():
+            for key, value in country_code_countries.items():
+                if country == value:
+                    return key
+                else:
+                    pass
+        else:
+            print('Error: {} not found'.format(country))
+    else:
+        print('Error: data folder not found')
+
+    return None
+
+
+def _get_country_code_countries():
+    '''
+    Scrape country codes and countries from web page
+
+    Parameters:
+        None
+
+    Returns:
+        country_code_countries: dict with country codes and countries
+    '''
+    print('Get country code countries')
+    country_code_countries = {}
+    url = 'https://www.payscale.com/research/Country'
+
+    time.sleep(SLEEP_TIME)
+    print('Connecting to {}'.format(url))
+    browser = webdriver.Firefox()
+    browser.get(url)
+    #print(browser.title)
+
+    if 'PayScale' in browser.title:
+        print('Extract country code')
+        time.sleep(SLEEP_TIME)
+        element = browser.find_element(by=By.XPATH, value = '/html/body/div[1]/div/div[2]/div/div[3]/div')
+        inner_html = element.get_attribute('innerHTML')
+
+        inner_html = inner_html.replace('<div class="location__col location__col--full"><a href="', '')
+        href_locations = list(inner_html.split('</a></div>'))
+
+        for href_location in href_locations:
+            if len(href_location) > 0:
+                href_location = href_location.split('/Salary')[0]
+                href_location = href_location.replace('/research/', '')
+                country_code, country = href_location.split('/Country=')
+                country_code_countries[country_code] = country
+            else:
+                pass
+
+        #print(country_code_countries)
+
+        print('Close the browser')
+        time.sleep(SLEEP_TIME)
+        browser.quit()
+    else:
+        print('Error: another page was expected')
+
+    return country_code_countries
+
+
+def get_salary(country, job):
     '''
     Scrape salaty from web page
 
     Parameters:
-        country_code: Country code to search
-        job: job name to search with _ instead od spaces
+        country: Country to search
+        job: job name to search
 
     Returns:
         salary: salary
     '''
+    print('Get salary')
+    salary = None
+    base_url = 'https://www.payscale.com/research/_COUNTRY_CODE_/Job=_JOB_NAME_/Salary'
 
-    url = BASE_URL.replace('_COUNTRY_CODE_', country_code).replace('_JOB_NAME_', job)
+    country = country.replace(' ', '_')
+    job = job.replace(' ', '_')
 
-    time.sleep(SLEEP_TIME)
-    print('Connecting to {}'.format(url))
-    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    browser.get(url)
-    # #print(browser.title)
-    # assert 'Agor' in browser.title
+    print('Creating folders if needed')
+    if os.path.isdir('data') is False:
+        os.mkdir('data')
+    else:
+        pass
 
-    # print('Selecting data for last 60 days')
-    # time.sleep(SLEEP_TIME * 2)
-    # select_period = browser.find_element_by_class_name('custom-select')
-    # select_period = Select(select_period)
-    # select_period.select_by_visible_text('Ultimi 60 giorni')
+    country_code = _get_country_code(country)
 
-    # print('Extract data from totali table')
-    # time.sleep(SLEEP_TIME * 2)
-    # soup = BeautifulSoup(browser.page_source, 'lxml') # Selenium hands the page source to Beautiful Soup
-    # voci = [element.text for element in soup.find_all('div', attrs = {'class':'col-md-5 col-sm-4 col-3'})]
-    # #print(voci)
-    # totali = [element.text for element in soup.find_all('div', attrs = {'class':'col-md-4 col-sm-4 col-4 dettaglio_consumi total-consumi'})]
-    # #print(totali)
-    # totals = pd.DataFrame({'Voci' : voci, 'Totali' : totali})
-    # #print(totals)
-    # totals.to_pickle('data/extracted/' + dt_string + '/totali.pickle')
-    # #shutil.move('totals.pickle', 'data/extracted/' + dt_string + '/totals.pickle')
-    # print('Save data from totali table in {}'.format('data/extracted/' + dt_string + '/totali.pickle'))
+    if country_code is None:
+        print('Error: country code not found for {}'.format(country))
+    else:
+        url = base_url.replace('_COUNTRY_CODE_', country_code).replace('_JOB_NAME_', job)
 
-    # print('Extract data from soglie table')
+        time.sleep(SLEEP_TIME)
+        print('Connecting to {}'.format(url))
+        browser = webdriver.Firefox()
+        browser.get(url)
+        #print(browser.title)
 
-    # # Open soglie table
-    # time.sleep(SLEEP_TIME)
-    # button_soglie = browser.find_element_by_id('link-soglie')
-    # button_soglie.click()
-    # #WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.ID, 'link-soglie'))).click()
+        if 'PayScale' in browser.title:
+            print('Extract salary')
+            time.sleep(SLEEP_TIME)
+            element = browser.find_element(by=By.CLASS_NAME, value = 'paycharts__value')
+            salary = element.text
+            salary = salary.replace(',', '')
 
-    # # Extract data from soglie table
-    # time.sleep(SLEEP_TIME)
-    # data = []
-    # table = soup.find('table')
-    # table_body = table.find('tbody')
-    # rows = table_body.find_all('tr')
+            #print(salary)
 
-    # for i in range(len(rows)):
-    #     if i == 0:
-    #         cols = rows[i].find_all('th')
-    #     else:
-    #         cols = rows[i].find_all('td')
-    #     cols = [ele.text.strip() for ele in cols]
-    #     data.append([ele for ele in cols if ele]) # Get rid of empty values
-
-    # #print(data)
-    # soglie = pd.DataFrame(data)
-    # soglie.columns = soglie.iloc[0]
-    # soglie = soglie.drop(soglie.index[0])
-    # #print(soglie)
-    # soglie.to_pickle('data/extracted/' + dt_string + '/soglie.pickle')
-    # #shutil.move('soglie.pickle', 'data/extracted/' + dt_string + '/soglie.pickle')
-    # print('Save data from soglie table in {}'.format('data/extracted/' + dt_string + '/soglie.pickle'))
-
-    # time.sleep(SLEEP_TIME)
-    # button_close = browser.find_elements_by_class_name('close')[1] # For soglie is the second one
-    # button_close.click()
-
-    # # Extract data for each voce
-
-    # time.sleep(SLEEP_TIME)
-    # a_tags = browser.find_elements_by_tag_name('a')
-    # button_dettagli = []
-    # for a_tag in a_tags:
-    #     if 'DETTAGLI' in a_tag.text:
-    #         button_dettagli.append(a_tag)
-    # # button_dettagli = browser.find_elements_by_xpath("//section[@class='dettagli_traffico']//container//row//div[@class='col-md-10 col-sm-12']//row//div[@class='col-md-3 col-sm-4 col-5 text-right//a']")
-
-    # #print(len(button_dettagli))
-
-    # for j in range(len(button_dettagli)):
-    #     print('Extract data from {} table'.format(voci[j]))
-
-    #     #input("Enter to continue")
-
-    #     time.sleep(SLEEP_TIME)
-    #     button_dettagli[j].click()
-    #     time.sleep(SLEEP_TIME)
-
-    #     texts = []
-    #     soup = BeautifulSoup(browser.page_source, 'lxml') # Selenium hands the page source to Beautiful Soup
-
-    #     texts = [element.text for element in soup.find_all('div', attrs = {'class': 'modal-body'})]
-    #     #print(texts)
-
-    #     if 'Nessun consumo da visualizzare' in texts[0]:
-    #         print('No data')
-    #     else:
-    #         table = soup.find('table')
-    #         table_body = table.find('tbody')
-    #         rows = table_body.find_all('tr')
-    #         data = []
-
-    #         for i in range(len(rows)):
-    #             if i == 0:
-    #                 cols = rows[i].find_all('th')
-    #             else:
-    #                 cols = rows[i].find_all('td')
-    #             cols = [ele.text.strip() for ele in cols]
-    #             data.append([ele for ele in cols if ele]) # Get rid of empty values
-
-    #         #print(data)
-    #         dettaglio = pd.DataFrame(data)
-    #         dettaglio.columns = dettaglio.iloc[0]
-    #         dettaglio = dettaglio.drop(dettaglio.index[0])
-    #         #print(dettaglio)
-    #         dettaglio.to_pickle('data/extracted/' + dt_string + '/dettaglio_' + voci[j].replace(' ', '_').lower() + '.pickle')
-    #         print('Save data from {} table in {}'.format(voci[j], 'data/extracted/' + dt_string + '/dettaglio_' + voci[j].replace(' ', '_').lower() + '.pickle'))
-
-    #     time.sleep(SLEEP_TIME)
-    #     button_close = browser.find_elements_by_class_name('close')[0] # For dettaglio is the first one
-    #     button_close.click()
+        else:
+            print('Error: another page was expected')
 
     print('Close the browser')
     time.sleep(SLEEP_TIME)
     browser.quit()
 
+    return salary
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=  'Extract data')
-    parser.add_argument('--country_code', type = str, default = 'IT', help = 'Country code to search')
-    parser.add_argument('--job', type = str, default = 'Data_Engineer', help = 'Job to search (use _ instead of space)')
+    parser.add_argument('--country', type = str, default = 'Italy', help = 'Country to search')
+    parser.add_argument('--job', type = str, default = 'Data Engineer', help = 'Job to search')
 
     args = parser.parse_args()
     # print(args)
 
-    country_code = args.country_code
+    country = args.country
     job = args.job
 
-    print(get_salary(country_code, job))
+    print(get_salary(country, job))
 else:
     pass
