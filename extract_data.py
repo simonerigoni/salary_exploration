@@ -147,9 +147,9 @@ def get_salary(country, job):
         else:
             print('Error: another page was expected')
 
-    print('Close the browser')
-    time.sleep(SLEEP_TIME)
-    browser.quit()
+        print('Close the browser')
+        time.sleep(SLEEP_TIME)
+        browser.quit()
 
     return salary
 
