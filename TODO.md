@@ -10,6 +10,7 @@
 
 - [ ] Clean code
 - [ ] Remove dt_string
+- [ ] Remove search folder
 - [ ] Test end to end
 
 ## Done ✓

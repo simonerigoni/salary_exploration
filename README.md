@@ -3,7 +3,7 @@
 
 ## Introduction
  
-The idea is to automatically search on [payscale.com](https://www.payscale.com/) the salary for a list of jobs in different countries and visulize the results with a Dash web application.
+The idea is to automatically search on [payscale.com](https://www.payscale.com/) the salary for a list of jobs in different countries and visualize the results with a Dash web application.
 
 
 ## Software and Libraries

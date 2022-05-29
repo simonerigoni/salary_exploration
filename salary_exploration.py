@@ -98,11 +98,11 @@ if __name__ == '__main__':
                     for job in list_search_jobs:
                         output_file.write('{},{},{}\n'.format(country, job, extract_data.get_salary(country, job)))
 
-            print('Move file {} in {}'.format('search/countries.csv', 'data/' + date_string + '/countries.csv'))
-            os.rename('search/countries.csv', 'data/' + date_string + '/countries.csv')
+            # print('Move file {} in {}'.format('search/countries.csv', 'data/' + date_string + '/countries.csv'))
+            # os.rename('search/countries.csv', 'data/' + date_string + '/countries.csv')
         
-            print('Move file {} in {}'.format('search/jobs.csv', 'data/' + date_string + '/jobs.csv'))
-            os.rename('search/jobs.csv', 'data/' + date_string + '/jobs.csv')
+            # print('Move file {} in {}'.format('search/jobs.csv', 'data/' + date_string + '/jobs.csv'))
+            # os.rename('search/jobs.csv', 'data/' + date_string + '/jobs.csv')
         else:
             transform_data.normalize_salary('data/' + date_string + '/country_job_salary.csv')
 
