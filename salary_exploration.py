@@ -88,7 +88,6 @@ if __name__ == '__main__':
             os.rename('search/jobs.csv', 'data/' + date_string + '/jobs.csv')
         else:
             transform_data.normalize_salary('data/' + date_string + '/country_job_salary.csv')
-           
 
     except ValueError:
         print('Error: incorrect date string format. It should be {}'.format(DATETIME_FORMAT))

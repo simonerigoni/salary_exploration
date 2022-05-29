@@ -15,6 +15,10 @@ lib64
 share
 pyvenv.cfg
 
+# Ignore the dash directories
+
+etc
+
 # Ignore others folder
 
 others

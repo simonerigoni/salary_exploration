@@ -11,7 +11,7 @@ The idea is to automatically search on [payscale.com](https://www.payscale.com/)
 This project uses Python 3.9.2 and the following libraries:
 * [Pandas](http://pandas.pydata.org)
 * [Selenium](https://pypi.org/project/selenium/)
-* [dash](https://plot.ly/dash/)
+* [dash](https://dash.plotly.com/)
 
 More informations in `requirements.txt`. To create it I have used `python -m pip freeze > requirements.txt`. To install all Python packages written in the requirements.txt file run `pip install -r requirements.txt`.
 
@@ -54,7 +54,7 @@ From the project folder run `python dash_salary_exploration.py` to start the das
 
 The dash application 
 
-![Home](images/home.JPG)
+![Home](images/home.png)
 
 
 ## Licensing and Acknowledgements
