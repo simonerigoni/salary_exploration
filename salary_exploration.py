@@ -74,7 +74,7 @@ def get_last_salary_exploration():
         pass
     else:
         latest_dir = max(all_dir, key = os.path.getmtime)
-        latest_dir.split('/')[1]
+        latest_dir = latest_dir.split('/')[1]
 
     return latest_dir
 
@@ -179,5 +179,7 @@ if __name__ == '__main__':
 
     except ValueError:
         print('Error: incorrect date string format. It should be {}'.format(DATETIME_FORMAT))
+
+    # print(get_last_salary_exploration())
 else:
     pass

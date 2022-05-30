@@ -1,0 +1,16 @@
+Country,Job,Local Currency Salary,Euro Salary
+Italy,Data Engineer,€30159,30159.0
+Italy,Data Scientist,€31045,31045.0
+Italy,Embedded Software Engineer,€30515,30515.0
+Germany,Data Engineer,€57813,57813.0
+Germany,Data Scientist,€55443,55443.0
+Germany,Embedded Software Engineer,€54401,54401.0
+Spain,Data Engineer,€38000,38000.0
+Spain,Data Scientist,€34843,34843.0
+Spain,Embedded Software Engineer,€32847,32847.0
+United States,Data Engineer,$93245,86505.25
+United States,Data Scientist,$97358,90320.96
+United States,Embedded Software Engineer,$83334,77310.62
+Switzerland,Data Engineer,91810 Fr.,88939.32
+Switzerland,Data Scientist,96304 Fr.,93311.05
+Switzerland,Embedded Software Engineer,83345 Fr.,80756.06

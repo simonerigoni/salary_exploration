@@ -139,6 +139,6 @@ if __name__ == '__main__':
     # print(convert_local_currency_to_euro('€30159'))
     # print(convert_local_currency_to_euro('96304 Fr.'))
 
-    transform_salary(input_file, 'data/20220530T103056Z/country_job_salary_transformed.csv')
+    transform_salary(input_file, input_file.replace('.csv', '_transformed.csv'))
 else:
     pass
