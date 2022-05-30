@@ -18,12 +18,12 @@ def convert_local_currency_to_euro(local_currency):
     Convert local currency to euro
 
     Parameters:
-        input_file: File with salary to normalize
+        input_file: File with salary to transform
 
     Returns:
         None
     '''
-    print('Convert local currency to euro')
+    print('Convert local currency {} to euro'. format(local_currency))
 
     euro_amount = None
 
@@ -41,53 +41,77 @@ def convert_local_currency_to_euro(local_currency):
         if 'Google' in browser.title:
             time.sleep(SLEEP_TIME)
             print('Accept cookies')
-            accept_cookies_button =  browser.find_element(by = By.ID, value = 'L2AGLb')
+            accept_cookies_button = browser.find_element(by = By.ID, value = 'L2AGLb')
             accept_cookies_button.click()
 
             time.sleep(SLEEP_TIME)
+            print('Select English')
+            element = browser.find_element(by = By.XPATH, value = '/html/body/div[1]/div[4]/div/div/a')
+            element.click()
+     
+            time.sleep(SLEEP_TIME)
             print('Search for conversion')
             search_box = browser.find_element(by = By.NAME, value = 'q')
-            search_box.send_keys('{} to euro'.format(local_currency))
+            search_box.send_keys('{} to EUR'.format(local_currency))
             search_box.submit()
 
-            browser.switch_to.default_content()
+            time.sleep(SLEEP_TIME)
+            print('Read converted value')
+
+            euro_string = ''
+
+            try:
+                element =  browser.find_element(by = By.XPATH, value = '/html/body/div[7]/div/div[10]/div/div[2]/div[2]/div/div/div[1]/div/div/div/div/div/div/div[3]/div[1]/div[1]/div[2]/span[1]')
+                euro_string = element.text
+            except Exception as e:
+                print(e)
+
+            if euro_string == '':
+                try:
+                    element =  browser.find_element(by = By.XPATH, value = '/html/body/div[7]/div/div[11]/div/div[2]/div[2]/div/div/div[1]/div/div/div/div/div/div/div[3]/div[1]/div[1]/div[2]/span[1]')
+                    euro_string = element.text
+                except Exception as e:
+                    print(e)
+            else:
+                pass
+
+            if euro_string == '':
+                euro_string = '0'
+            else:
+                pass
+
+            euro_amount = float(euro_string.replace(' ', '').replace(',', ''))
 
             time.sleep(SLEEP_TIME)
-            element =  browser.find_element(by = By.XPATH, value = '/html/body/div[7]/div/div[10]/div/div[2]/div[2]/div/div/div[1]/div/div/div/div/div/div/div[3]/div[1]/div[1]/div[2]/span[1]')
-            euro_string = element.text
-            euro_amount = float(euro_string.replace(' ', '').replace(',', '.'))
-
             print('Close the browser')
-            time.sleep(SLEEP_TIME)
-            #browser.quit()
+            browser.quit()
         else:
             print('Error: another page was expected')
 
     return euro_amount
 
 
-def normalize_salary(input_file):
+def transform_salary(input_filename, output_filename):
     '''
-    Create a CSV file with normalized salary
+    Create a CSV file with transformed salary
 
     Parameters:
-        input_file: File with salary to normalize
+        input_filename: File with salary to transform
 
     Returns:
         None
     '''
-    print('Create a CSV file with normalized salary')
-    if os.path.isfile(input_file) is False:
+    print('Create a CSV file with transformed salary')
+    if os.path.isfile(input_filename) is False:
         print('Error: file {} not found')
     else:
-        filename, extension = input_file.split('.')
+        filename, extension = input_filename.split('.')
 
         if extension == 'csv':
-            output_filename = filename + '_normalized.csv'
             
             if os.path.isfile(output_filename) is False:
                  
-                df = pd.read_csv(input_file)
+                df = pd.read_csv(input_filename)
                 with open(output_filename, 'w') as output_file:
                     output_file.write('Country,Job,Local Currency Salary,Euro Salary\n')
                 
@@ -105,7 +129,7 @@ def normalize_salary(input_file):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=  'Transform data')
-    parser.add_argument('--input_file', default =  'data/20220529T121639Z/country_job_salary.csv', help = 'Date in format YYYYMMMDDTHHMMSSZ')
+    parser.add_argument('--input_file', default =  'data/20220530T103056Z/country_job_salary.csv', help = 'Date in format YYYYMMMDDTHHMMSSZ')
 
     args = parser.parse_args()
     # print(args)
@@ -115,6 +139,6 @@ if __name__ == '__main__':
     # print(convert_local_currency_to_euro('€30159'))
     # print(convert_local_currency_to_euro('96304 Fr.'))
 
-    normalize_salary(input_file)
+    transform_salary(input_file, 'data/20220530T103056Z/country_job_salary_transformed.csv')
 else:
     pass

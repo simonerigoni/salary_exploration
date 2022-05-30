@@ -89,8 +89,8 @@ def _get_country_code_countries():
 
         #print(country_code_countries)
 
-        print('Close the browser')
         time.sleep(SLEEP_TIME)
+        print('Close the browser')
         browser.quit()
     else:
         print('Error: another page was expected')
@@ -138,7 +138,7 @@ def get_salary(country, job):
         if 'PayScale' in browser.title:
             print('Extract salary')
             time.sleep(SLEEP_TIME)
-            element = browser.find_element(by=By.CLASS_NAME, value = 'paycharts__value')
+            element = browser.find_element(by = By.CLASS_NAME, value = 'paycharts__value')
             salary = element.text
             salary = salary.replace(',', '')
 

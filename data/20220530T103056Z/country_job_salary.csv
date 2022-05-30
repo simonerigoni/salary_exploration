@@ -3,10 +3,6 @@ Italy,Data Engineer,€30159
 Italy,Data Scientist,€31045
 Italy,Embedded Software Engineer,€30515
 Italy,Pippo,None
-Czech Republic,Data Engineer,407.61 Kč
-Czech Republic,Data Scientist,840000 Kč
-Czech Republic,Embedded Software Engineer,235500 Kč
-Czech Republic,Pippo,None
 Germany,Data Engineer,€57813
 Germany,Data Scientist,€55443
 Germany,Embedded Software Engineer,€54401
@@ -23,3 +19,7 @@ Switzerland,Data Engineer,91810 Fr.
 Switzerland,Data Scientist,96304 Fr.
 Switzerland,Embedded Software Engineer,83345 Fr.
 Switzerland,Pippo,None
+Pluto,Data Engineer,None
+Pluto,Data Scientist,None
+Pluto,Embedded Software Engineer,None
+Pluto,Pippo,None
