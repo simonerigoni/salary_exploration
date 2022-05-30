@@ -33,6 +33,17 @@ SLEEP_TIME = 5
 
 
 if __name__ == '__main__':
-    pass
+    print(f"{EXTERNAL_STYLESHEETS=}")
+    print(f"{DATA_FOLDER=}")
+    print(f"{SEARCH_FOLDER=}")
+    print(f"{COUNTRY_JOB_SALARY_FILENAME=}")
+    print(f"{COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME=}")
+    print(f"{COUNTRIES_FILENAME=}")
+    print(f"{JOBS_FILENAME=}")
+    print(f"{DATETIME_FORMAT=}")
+    print(f"{DEAFULT_COUNTRY_SEARCH=}")
+    print(f"{DEAFULT_JOB_SEARCH=}")
+    print(f"{COUNTRY_CODE_COUNTRIES_FILENAME=}")
+    print(f"{SLEEP_TIME=}")
 else:
     pass
