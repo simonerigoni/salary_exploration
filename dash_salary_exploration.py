@@ -2,8 +2,7 @@
 #
 # python dash_salary_exploration.py
 
-import os
-#import pickle
+
 import dash
 import dash_bootstrap_components as dbc
 import plotly.express as px
@@ -11,6 +10,7 @@ import pandas as pd
 
 
 import salary_exploration
+
 
 EXTERNAL_STYLESHEETS = [
     'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
@@ -34,13 +34,16 @@ def _create_app():
     ''' 
     Creates dash application
 
+    Parameters:
+        None
+        
     Returns:
         app (dash.Dash): Dash application
     '''
 
     app = dash.Dash(__name__, external_stylesheets = EXTERNAL_STYLESHEETS)
 
-    df = salary_exploration.get_country_job_salary_normalized()
+    df = salary_exploration.get_country_job_salary_transformed()
 
     fig = px.bar(df, x = 'Job', y = 'Euro Salary', color = 'Country', barmode = 'group')
 
