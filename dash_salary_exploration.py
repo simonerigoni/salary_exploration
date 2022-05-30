@@ -43,9 +43,7 @@ def _create_app():
 
     app = dash.Dash(__name__, external_stylesheets = EXTERNAL_STYLESHEETS)
 
-    df = salary_exploration.get_country_job_salary_transformed()
-
-    fig = px.bar(df, x = 'Job', y = 'Euro Salary', color = 'Country', barmode = 'group')
+    all_date_strings = salary_exploration.get_all_salary_exploration()
 
     app.layout = dash.html.Div(
         [
@@ -74,14 +72,27 @@ def _create_app():
                             dash.html.H1('Salary Exploration', className='text-center')
                             , dash.html.P('Visualize salary information from Payscale', className='text-center')
                             , dash.html.Hr()
-                            , dash.dcc.Graph(
-                                id = 'salary-country-graph',
-                                figure = fig
-                            )
+                            , dash.dcc.Dropdown(all_date_strings, all_date_strings[-1], id = 'dropdown')
+                            , dash.html.Div(id = 'dd-output-container')
                         ] , className = 'container')
                 ], className = 'jumbotron')
             , dash.html.Div(id = 'results')
         ], className = 'container')
+
+    @app.callback(dash.Output('results', 'children'), dash.Input('dropdown', 'value'))
+    def update_output(value):
+        results = []
+
+        df = salary_exploration.get_country_job_salary_transformed(value)
+
+        fig = px.bar(df, x = 'Job', y = 'Euro Salary', color = 'Country', barmode = 'group')
+
+        results.append(dash.html.Div(dash.dcc.Graph(
+                        id = 'salary-country-graph',
+                        figure = fig
+                    )))
+
+        return results
 
     return app
 

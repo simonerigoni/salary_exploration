@@ -23,6 +23,7 @@ def _get_country_code(country):
     Returns:
         country_code: Code of the searched country
     '''
+
     print('Get country code')
     country_code_countries = {}
 
@@ -59,6 +60,7 @@ def _get_country_code_countries():
     Returns:
         country_code_countries: dict with country codes and countries
     '''
+
     print('Get country code countries')
     country_code_countries = {}
     url = 'https://www.payscale.com/research/Country'
@@ -109,6 +111,7 @@ def get_salary(country, job):
     Returns:
         salary: salary
     '''
+    
     print('Get salary')
     salary = None
     base_url = 'https://www.payscale.com/research/_COUNTRY_CODE_/Job=_JOB_NAME_/Salary'

@@ -61,6 +61,7 @@ def get_last_salary_exploration():
         date_string: last exploration date_string in format YYYYMMMDDTHHMMSSZ
     '''
 
+    print('Get last salary exploration')
     latest_dir = ''
     all_dir = []
 
@@ -79,29 +80,58 @@ def get_last_salary_exploration():
     return latest_dir
 
 
-def get_country_job_salary_transformed():
+def get_all_salary_exploration():
+    ''' 
+    Get date string of all salary exploration
+    
+    Parameters:
+        None
+
+    Returns:
+        date_strings: all exploration date_string
+    '''
+
+    print('Get all salary exploration')
+    all_dir = []
+
+    for dir in os.listdir(DATA_FOLDER):
+        if os.path.isdir(DATA_FOLDER + '/' + dir):
+            all_dir.append(dir)
+        else:
+            pass
+
+    return all_dir
+
+    
+def get_country_job_salary_transformed(date_string):
     ''' 
     Get country job salary transformed data
     
     Parameters:
-        None
+        date_string: exploration date_string in format YYYYMMMDDTHHMMSSZ
+
     Returns:
         df: country job salary transformed data
     '''
 
-    last_date_string = get_last_salary_exploration()
+    print('Get country job salary transformed')
 
-    if os.path.isfile(DATA_FOLDER + '/' + last_date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME) is False:
-
-        _do_salary_exploration()
-
-        last_date_string = get_last_salary_exploration()
-
-        transform_data.transform_salary(DATA_FOLDER + '/' + last_date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME, DATA_FOLDER + '/' + last_date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
+    if date_string is None:
+        date_string = get_last_salary_exploration()
     else:
         pass
 
-    df = pd.read_csv(DATA_FOLDER + '/' + last_date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
+    if os.path.isfile(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME) is False:
+
+        _do_salary_exploration()
+
+        date_string = get_last_salary_exploration()
+
+        transform_data.transform_salary(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME, DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
+    else:
+        pass
+
+    df = pd.read_csv(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
 
     return df
 
@@ -116,6 +146,7 @@ def _do_salary_exploration(date_string = datetime.datetime.now().strftime(DATETI
         None
     '''
 
+    print('Do salary exploration')
     _create_folders(date_string)
 
     if os.path.isfile(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME) is False:

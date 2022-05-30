@@ -1,0 +1,19 @@
+Country,Job,Local Currency Salary,Euro Salary
+Italy,Data Engineer,€30159,30159.0
+Italy,Data Scientist,€31045,31045.0
+Italy,Data Analyst,€27480,27480.0
+Germany,Data Engineer,€57813,57813.0
+Germany,Data Scientist,€55443,55443.0
+Germany,Data Analyst,€46328,46328.0
+Spain,Data Engineer,€38000,38000.0
+Spain,Data Scientist,€34843,34843.0
+Spain,Data Analyst,€28626,28626.0
+France,Data Engineer,€44776,44776.0
+France,Data Scientist,€42858,42858.0
+France,Data Analyst,€40447,40447.0
+Portugal,Data Engineer,€27971,27971.0
+Portugal,Data Scientist,€23921,23921.0
+Portugal,Data Analyst,€20783,20783.0
+Greece,Data Engineer,$15525,14395.4
+Greece,Data Scientist,$17271,16014.71
+Greece,Data Analyst,$15899,14742.51

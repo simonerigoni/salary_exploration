@@ -23,8 +23,8 @@ def convert_local_currency_to_euro(local_currency):
     Returns:
         None
     '''
-    print('Convert local currency {} to euro'. format(local_currency))
 
+    print('Convert local currency {} to euro'. format(local_currency))
     euro_amount = None
 
     if '€' in local_currency:
@@ -101,6 +101,7 @@ def transform_salary(input_filename, output_filename):
     Returns:
         None
     '''
+    
     print('Create a CSV file with transformed salary')
     if os.path.isfile(input_filename) is False:
         print('Error: file {} not found')
@@ -129,7 +130,7 @@ def transform_salary(input_filename, output_filename):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=  'Transform data')
-    parser.add_argument('--input_file', default =  'data/20220530T103056Z/country_job_salary.csv', help = 'Date in format YYYYMMMDDTHHMMSSZ')
+    parser.add_argument('--input_file', default =  'data/20220529T102956Z/country_job_salary.csv', help = 'Date in format YYYYMMMDDTHHMMSSZ')
 
     args = parser.parse_args()
     # print(args)
