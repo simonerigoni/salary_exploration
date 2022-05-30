@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 import pickle
 
 
-SLEEP_TIME = 5
+import configuration
 
 
 def _get_country_code(country):
@@ -27,13 +27,13 @@ def _get_country_code(country):
     print('Get country code')
     country_code_countries = {}
 
-    if os.path.isdir('data') is True:
-        if os.path.isfile('data/country_code_countries.pkl') is True:
-            with open('data/country_code_countries.pkl', 'rb') as input_file:
+    if os.path.isdir(configuration.DATA_FOLDER) is True:
+        if os.path.isfile(configuration.DATA_FOLDER + '/' + configuration.COUNTRY_CODE_COUNTRIES_FILENAME) is True:
+            with open(configuration.DATA_FOLDER + '/' + configuration.COUNTRY_CODE_COUNTRIES_FILENAME, 'rb') as input_file:
                 country_code_countries = pickle.load(input_file)
         else:
             country_code_countries = _get_country_code_countries()
-            with open('data/country_code_countries.pkl', 'wb') as output_file:
+            with open(configuration.DATA_FOLDER + '/' + configuration.COUNTRY_CODE_COUNTRIES_FILENAME, 'wb') as output_file:
                 pickle.dump(country_code_countries, output_file)
 
         if country in country_code_countries.values():
@@ -45,7 +45,7 @@ def _get_country_code(country):
         else:
             print('Error: {} not found'.format(country))
     else:
-        print('Error: data folder not found')
+        print('Error: {} folder not found'.format(configuration.DATA_FOLDER))
 
     return None
 
@@ -65,7 +65,7 @@ def _get_country_code_countries():
     country_code_countries = {}
     url = 'https://www.payscale.com/research/Country'
 
-    time.sleep(SLEEP_TIME)
+    time.sleep(configuration.SLEEP_TIME)
     print('Connecting to {}'.format(url))
     browser = webdriver.Firefox()
     browser.get(url)
@@ -73,7 +73,7 @@ def _get_country_code_countries():
 
     if 'PayScale' in browser.title:
         print('Extract country code')
-        time.sleep(SLEEP_TIME)
+        time.sleep(configuration.SLEEP_TIME)
         element = browser.find_element(by=By.XPATH, value = '/html/body/div[1]/div/div[2]/div/div[3]/div')
         inner_html = element.get_attribute('innerHTML')
 
@@ -91,7 +91,7 @@ def _get_country_code_countries():
 
         #print(country_code_countries)
 
-        time.sleep(SLEEP_TIME)
+        time.sleep(configuration.SLEEP_TIME)
         print('Close the browser')
         browser.quit()
     else:
@@ -120,8 +120,8 @@ def get_salary(country, job):
     job = job.replace(' ', '_')
 
     print('Creating folders if needed')
-    if os.path.isdir('data') is False:
-        os.mkdir('data')
+    if os.path.isdir(configuration.DATA_FOLDER) is False:
+        os.mkdir(configuration.DATA_FOLDER)
     else:
         pass
 
@@ -132,7 +132,7 @@ def get_salary(country, job):
     else:
         url = base_url.replace('_COUNTRY_CODE_', country_code).replace('_JOB_NAME_', job)
 
-        time.sleep(SLEEP_TIME)
+        time.sleep(configuration.SLEEP_TIME)
         print('Connecting to {}'.format(url))
         browser = webdriver.Firefox()
         browser.get(url)
@@ -140,7 +140,7 @@ def get_salary(country, job):
 
         if 'PayScale' in browser.title:
             print('Extract salary')
-            time.sleep(SLEEP_TIME)
+            time.sleep(configuration.SLEEP_TIME)
             element = browser.find_element(by = By.CLASS_NAME, value = 'paycharts__value')
             salary = element.text
             salary = salary.replace(',', '')
@@ -151,14 +151,14 @@ def get_salary(country, job):
             print('Error: another page was expected')
 
         print('Close the browser')
-        time.sleep(SLEEP_TIME)
+        time.sleep(configuration.SLEEP_TIME)
         browser.quit()
 
     return salary
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=  'Extract data')
+    parser = argparse.ArgumentParser(description = 'Extract data')
     parser.add_argument('--country', type = str, default = 'Italy', help = 'Country to search')
     parser.add_argument('--job', type = str, default = 'Data Engineer', help = 'Job to search')
 

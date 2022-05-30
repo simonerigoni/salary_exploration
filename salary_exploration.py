@@ -9,18 +9,9 @@ import datetime
 import pandas as pd
 
 
+import configuration
 import extract_data
 import transform_data
-
-DATA_FOLDER = 'data'
-SEARCH_FOLDER = 'search'
-COUNTRY_JOB_SALARY_FILENAME = 'country_job_salary.csv'
-COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME = COUNTRY_JOB_SALARY_FILENAME.replace('.csv', '_transformed.csv')
-COUNTRIES_FILENAME = 'countries.csv'
-JOBS_FILENAME = 'jobs.csv'
-DATETIME_FORMAT = '%Y%m%dT%H%M%SZ'
-DEAFULT_COUNTRY_SEARCH = ['Italy', 'Germany', 'Spain', 'United States', 'Switzerland', 'Pluto']
-DEAFULT_JOB_SEARCH = ['Data Engineer', 'Data Scientist', 'Embedded Software Engineer', 'Pippo']
 
 
 def _create_folders(date_string):
@@ -35,18 +26,18 @@ def _create_folders(date_string):
     '''
 
     print('Creating folders if needed')
-    if os.path.isdir(DATA_FOLDER) is False:
-        os.mkdir(DATA_FOLDER)
+    if os.path.isdir(configuration.DATA_FOLDER) is False:
+        os.mkdir(configuration.DATA_FOLDER)
     else:
         pass
 
-    if os.path.isdir(SEARCH_FOLDER) is False:
-        os.mkdir(SEARCH_FOLDER)
+    if os.path.isdir(configuration.SEARCH_FOLDER) is False:
+        os.mkdir(configuration.SEARCH_FOLDER)
     else:
         pass
 
-    if os.path.isdir(DATA_FOLDER + '/' + date_string) is False:
-        os.mkdir(DATA_FOLDER + '/' + date_string)
+    if os.path.isdir(configuration.DATA_FOLDER + '/' + date_string) is False:
+        os.mkdir(configuration.DATA_FOLDER + '/' + date_string)
     else:
         pass
 
@@ -65,9 +56,9 @@ def get_last_salary_exploration():
     latest_dir = ''
     all_dir = []
 
-    for dir in os.listdir(DATA_FOLDER):
-        if os.path.isdir(DATA_FOLDER + '/' + dir):
-            all_dir.append(DATA_FOLDER + '/' + dir)
+    for dir in os.listdir(configuration.DATA_FOLDER):
+        if os.path.isdir(configuration.DATA_FOLDER + '/' + dir):
+            all_dir.append(configuration.DATA_FOLDER + '/' + dir)
         else:
             pass
 
@@ -94,8 +85,8 @@ def get_all_salary_exploration():
     print('Get all salary exploration')
     all_dir = []
 
-    for dir in os.listdir(DATA_FOLDER):
-        if os.path.isdir(DATA_FOLDER + '/' + dir):
+    for dir in os.listdir(configuration.DATA_FOLDER):
+        if os.path.isdir(configuration.DATA_FOLDER + '/' + dir):
             all_dir.append(dir)
         else:
             pass
@@ -121,22 +112,22 @@ def get_country_job_salary_transformed(date_string):
     else:
         pass
 
-    if os.path.isfile(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME) is False:
+    if os.path.isfile(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME) is False:
 
         _do_salary_exploration()
 
         date_string = get_last_salary_exploration()
 
-        transform_data.transform_salary(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME, DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
+        transform_data.transform_salary(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_FILENAME, configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
     else:
         pass
 
-    df = pd.read_csv(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
+    df = pd.read_csv(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
 
     return df
 
 
-def _do_salary_exploration(date_string = datetime.datetime.now().strftime(DATETIME_FORMAT)):
+def _do_salary_exploration(date_string = datetime.datetime.now().strftime(configuration.DATETIME_FORMAT)):
     ''' 
     Do salary exploration
     
@@ -149,52 +140,52 @@ def _do_salary_exploration(date_string = datetime.datetime.now().strftime(DATETI
     print('Do salary exploration')
     _create_folders(date_string)
 
-    if os.path.isfile(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME) is False:
+    if os.path.isfile(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_FILENAME) is False:
         print('Read countries to search')
 
-        if os.path.isfile(SEARCH_FOLDER + '/' + COUNTRIES_FILENAME) is False:
-            df = pd.DataFrame(DEAFULT_COUNTRY_SEARCH, columns = ['Country'])
-            df.to_csv(SEARCH_FOLDER + '/' + COUNTRIES_FILENAME, index=False)
+        if os.path.isfile(configuration.SEARCH_FOLDER + '/' + configuration.COUNTRIES_FILENAME) is False:
+            df = pd.DataFrame(configuration.DEAFULT_COUNTRY_SEARCH, columns = ['Country'])
+            df.to_csv(configuration.SEARCH_FOLDER + '/' + configuration.COUNTRIES_FILENAME, index=False)
             
         else:
             pass
 
-        df_search_countries = pd.read_csv(SEARCH_FOLDER + '/' + COUNTRIES_FILENAME)
+        df_search_countries = pd.read_csv(configuration.SEARCH_FOLDER + '/' + configuration.COUNTRIES_FILENAME)
         list_search_countries = df_search_countries['Country'].values.tolist()
 
         print('Read jobs to search')
 
-        if os.path.isfile(SEARCH_FOLDER + '/' + JOBS_FILENAME) is False:
-            df = pd.DataFrame(DEAFULT_JOB_SEARCH, columns = ['Job'])
-            df.to_csv(SEARCH_FOLDER + '/' + JOBS_FILENAME, index=False)
+        if os.path.isfile(configuration.SEARCH_FOLDER + '/' + configuration.JOBS_FILENAME) is False:
+            df = pd.DataFrame(configuration.DEAFULT_JOB_SEARCH, columns = ['Job'])
+            df.to_csv(configuration.SEARCH_FOLDER + '/' + configuration.JOBS_FILENAME, index=False)
             
         else:
             pass
 
-        df_search_jobs = pd.read_csv(SEARCH_FOLDER + '/' + JOBS_FILENAME)
+        df_search_jobs = pd.read_csv(configuration.SEARCH_FOLDER + '/' + configuration.JOBS_FILENAME)
         list_search_jobs = df_search_jobs['Job'].values.tolist()
 
-        print('Write salary informations in {}'.format(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME))
+        print('Write salary informations in {}'.format(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_FILENAME))
 
-        with open(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME, 'w') as output_file:
+        with open(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_FILENAME, 'w') as output_file:
             output_file.write('Country,Job,Salary\n')
 
             for country in list_search_countries:
                 for job in list_search_jobs:
                     output_file.write('{},{},{}\n'.format(country, job, extract_data.get_salary(country, job)))
 
-        print('Move file {} in {}'.format(SEARCH_FOLDER + '/' + COUNTRIES_FILENAME, DATA_FOLDER + '/' + date_string + '/' + COUNTRIES_FILENAME))
-        os.rename(SEARCH_FOLDER + '/' + COUNTRIES_FILENAME, DATA_FOLDER + '/' + date_string + '/' + COUNTRIES_FILENAME)
+        print('Move file {} in {}'.format(configuration.SEARCH_FOLDER + '/' + configuration.COUNTRIES_FILENAME, configuration.DATA_FOLDER + '/' + date_string + '/' + configuration.COUNTRIES_FILENAME))
+        os.rename(configuration.SEARCH_FOLDER + '/' + configuration.COUNTRIES_FILENAME, configuration.DATA_FOLDER + '/' + date_string + '/' + configuration.COUNTRIES_FILENAME)
     
-        print('Move file {} in {}'.format(SEARCH_FOLDER + '/' + JOBS_FILENAME, DATA_FOLDER + '/' + date_string + '/' + JOBS_FILENAME))
-        os.rename(SEARCH_FOLDER + '/' + JOBS_FILENAME, DATA_FOLDER + '/' + date_string + '/' + JOBS_FILENAME)
+        print('Move file {} in {}'.format(configuration.SEARCH_FOLDER + '/' + configuration.JOBS_FILENAME, configuration.DATA_FOLDER + '/' + date_string + '/' + configuration.JOBS_FILENAME))
+        os.rename(configuration.SEARCH_FOLDER + '/' + configuration.JOBS_FILENAME, configuration.DATA_FOLDER + '/' + date_string + '/' + configuration.JOBS_FILENAME)
     else:
         pass
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=  'Salary Exploration')
-    parser.add_argument('--date_string', default = datetime.datetime.now().strftime(DATETIME_FORMAT), help = 'Date in format YYYYMMMDDTHHMMSSZ')
+    parser = argparse.ArgumentParser(description = 'Salary Exploration')
+    parser.add_argument('--date_string', default = datetime.datetime.now().strftime(configuration.DATETIME_FORMAT), help = 'Date in format YYYYMMMDDTHHMMSSZ')
 
     args = parser.parse_args()
     # print(args)
@@ -202,14 +193,14 @@ if __name__ == '__main__':
     date_string = args.date_string
 
     try:
-        date_datetime = datetime.datetime.strptime(date_string, DATETIME_FORMAT)
+        date_datetime = datetime.datetime.strptime(date_string, configuration.DATETIME_FORMAT)
 
         _do_salary_exploration(date_string)
 
-        transform_data.transform_salary(DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_FILENAME, DATA_FOLDER + '/' + date_string +  '/' + COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
+        transform_data.transform_salary(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_FILENAME, configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
 
     except ValueError:
-        print('Error: incorrect date string format. It should be {}'.format(DATETIME_FORMAT))
+        print('Error: incorrect date string format. It should be {}'.format(configuration.DATETIME_FORMAT))
 
     # print(get_last_salary_exploration())
 else:

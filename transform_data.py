@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 import pandas as pd
 
 
-SLEEP_TIME = 5
+import configuration
 
 
 def convert_local_currency_to_euro(local_currency):
@@ -32,30 +32,30 @@ def convert_local_currency_to_euro(local_currency):
     else:
         url = 'https://www.google.com/'
 
-        time.sleep(SLEEP_TIME)
+        time.sleep(configuration.SLEEP_TIME)
         print('Connecting to {}'.format(url))
         browser = webdriver.Firefox()
         browser.get(url)
         print(browser.title)
 
         if 'Google' in browser.title:
-            time.sleep(SLEEP_TIME)
+            time.sleep(configuration.SLEEP_TIME)
             print('Accept cookies')
             accept_cookies_button = browser.find_element(by = By.ID, value = 'L2AGLb')
             accept_cookies_button.click()
 
-            time.sleep(SLEEP_TIME)
+            time.sleep(configuration.SLEEP_TIME)
             print('Select English')
             element = browser.find_element(by = By.XPATH, value = '/html/body/div[1]/div[4]/div/div/a')
             element.click()
      
-            time.sleep(SLEEP_TIME)
+            time.sleep(configuration.SLEEP_TIME)
             print('Search for conversion')
             search_box = browser.find_element(by = By.NAME, value = 'q')
             search_box.send_keys('{} to EUR'.format(local_currency))
             search_box.submit()
 
-            time.sleep(SLEEP_TIME)
+            time.sleep(configuration.SLEEP_TIME)
             print('Read converted value')
 
             euro_string = ''
@@ -82,7 +82,7 @@ def convert_local_currency_to_euro(local_currency):
 
             euro_amount = float(euro_string.replace(' ', '').replace(',', ''))
 
-            time.sleep(SLEEP_TIME)
+            time.sleep(configuration.SLEEP_TIME)
             print('Close the browser')
             browser.quit()
         else:
@@ -129,8 +129,8 @@ def transform_salary(input_filename, output_filename):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=  'Transform data')
-    parser.add_argument('--input_file', default =  'data/20220529T102956Z/country_job_salary.csv', help = 'Date in format YYYYMMMDDTHHMMSSZ')
+    parser = argparse.ArgumentParser(description = 'Transform data')
+    parser.add_argument('--input_file', default = 'data/20220529T102956Z/country_job_salary.csv', help = 'Date in format YYYYMMMDDTHHMMSSZ')
 
     args = parser.parse_args()
     # print(args)

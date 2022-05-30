@@ -9,25 +9,8 @@ import plotly.express as px
 import pandas as pd
 
 
+import configuration
 import salary_exploration
-
-
-EXTERNAL_STYLESHEETS = [
-    'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-    {
-        'href': 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-        'rel': 'stylesheet',
-        'integrity': 'sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u',
-        'crossorigin': 'anonymous'
-    },
-    'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css',
-    {
-        'href': 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css',
-        'rel': 'stylesheet',
-        'integrity': 'sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp',
-        'crossorigin': 'anonymous'
-    }
-]
 
 
 def _create_app():
@@ -41,7 +24,7 @@ def _create_app():
         app (dash.Dash): Dash application
     '''
 
-    app = dash.Dash(__name__, external_stylesheets = EXTERNAL_STYLESHEETS)
+    app = dash.Dash(__name__, external_stylesheets = configuration.EXTERNAL_STYLESHEETS)
 
     all_date_strings = salary_exploration.get_all_salary_exploration()
 
