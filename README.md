@@ -35,7 +35,7 @@ From the project folder run `python dash_salary_exploration.py` to start the das
     |-- salary_exploration.py: module for search organizazion
     |-- transform_data.py: module for data transformation
     |-- extract_data.py: module for data extraction
-    |-- search: folder for the searching
+    |-- search: folder for the searching files
     |   |
     |   |-- countries.csv: list of countries to search
     |   |-- jobs.csv: list of jobs to search
@@ -50,11 +50,17 @@ From the project folder run `python dash_salary_exploration.py` to start the das
     |-- TODO.md
 </pre>
 
+All the modules provide the help funcionality provided by [argparse](https://docs.python.org/3/library/argparse.html) module.
+
+Every run is identified by the YYYYMMDDTHHMMSSZ date string.
+
 ## Results
 
 The dash application 
 
 ![Home](images/home.png)
+
+Using the dropdown menu is possible to select the extraction to visualize.
 
 
 ## Licensing and Acknowledgements

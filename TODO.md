@@ -8,10 +8,6 @@
 
 ## In Progress
 
-- [ ] Clean code
-- [ ] Remove dt_string
-- [ ] Remove search folder
-- [ ] Test end to end
 
 ## Done ✓
 
@@ -19,3 +15,4 @@
 - [x] Implement data extraction
 - [x] Implement data trasformation
 - [x] Implement data visualization with dash
+- [x] Test end to end
