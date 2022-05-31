@@ -85,6 +85,15 @@ def get_all_salary_exploration():
     print('Get all salary exploration')
     all_dir = []
 
+    if len(os.listdir(configuration.DATA_FOLDER)) == 0:
+        _do_salary_exploration()
+
+        date_string = get_last_salary_exploration()
+
+        transform_data.transform_salary(configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_FILENAME, configuration.DATA_FOLDER + '/' + date_string +  '/' + configuration.COUNTRY_JOB_SALARY_TRANSFORMED_FILENAME)
+    else:
+        pass   
+
     for dir in os.listdir(configuration.DATA_FOLDER):
         if os.path.isdir(configuration.DATA_FOLDER + '/' + dir):
             all_dir.append(dir)
