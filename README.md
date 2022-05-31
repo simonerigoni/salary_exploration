@@ -54,6 +54,22 @@ All the modules provide the help funcionality provided by [argparse](https://doc
 
 Every run is identified by the YYYYMMDDTHHMMSSZ date string.
 
+First you need to place in the `searh` directory the files:
+* countries.csv: list of the country to search
+* jobs.csv: list of the jobs to search
+
+I no file is provided the a deafult list will be used as demo porpuse.
+
+The job will ten create the file `country_job_salary.csv` by scraping the [payscale.com](https://www.payscale.com/) web site.
+
+Finally the data wil be transformed to convert the salary from local currency to a common one and saved in the file `country_job_salary_transformed.csv`
+
+![Flowchart](images/flowchart.png)
+
+Flowchart made using [draw.io](https://about.draw.io/)
+
+The white arrow indicates a flow of data while the black one indicates a call of functionalities.
+
 ## Results
 
 The dash application 
