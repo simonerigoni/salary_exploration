@@ -78,6 +78,9 @@ The dash application
 
 Using the dropdown menu is possible to select the extraction to visualize.
 
+You can find more information in this [blog post](https://simone-rigoni01.medium.com/salary-exploration-with-python-and-payscale-data-786e5557bcbc)
+
+
 
 ## Licensing and Acknowledgements
 
