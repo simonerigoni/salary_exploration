@@ -13,7 +13,7 @@ dash-html-components==2.0.0
 dash-table==5.0.0
 Flask==2.2.5
 Flask-Compress==1.12
-h11==0.13.0
+h11==0.16.0
 idna==3.3
 importlib-metadata==4.11.4
 itsdangerous==2.1.2
