@@ -1,24 +1,27 @@
-# Ignore the python compiled files
+# Files, directories or patterns that should be excluded from Git tracking
 
+# General stuff
+
+# Python compiled files
 *.pyc
 
-# Ignore log files
+# Actual project folders and files
 
-*.log
+# Temp stuff
+temp/
 
-# Ignore the venv directories and configuration
+# Logs
+logs/
 
-bin
-include
-lib
-lib64
-share
-pyvenv.cfg
+# Virtual enviroment
+.venv/
 
-# Ignore the dash directories
+# Pytest cache
+.pytest_cache/
 
-etc
+# Ruff cache
+.ruff_cache/
 
-# Ignore others folder
-
-others
+# uv stuff
+.python-version
+uv.lock
