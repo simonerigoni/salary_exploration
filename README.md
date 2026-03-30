@@ -8,29 +8,60 @@
  
 The idea is to automatically search on [payscale.com](https://www.payscale.com/) the salary for a list of jobs in different countries and visualize the results with a Dash web application.
 
+## Software and libraries
 
-## Software and Libraries
+This project uses Python 3.15 and the most important packages are:
 
-This project uses Python 3.15 and the following libraries:
-* [Pandas](http://pandas.pydata.org)
-* [Selenium](https://pypi.org/project/selenium/)
-* [dash](https://dash.plotly.com/)
+- [Pandas](http://pandas.pydata.org)
+- [Selenium](https://pypi.org/project/selenium/)
+- [dash](https://dash.plotly.com/)
 
 Set up the project with `uv sync` from the project folder. Then run checks with `uv run pre-commit run --all-files` or `uv run pytest`.
 
-
 ## Data
 
-The data is scraped from [payscale.com](https://www.payscale.com/)
+Have a look at the `data` folder and its [DATA.md](data/DATA.md) file.
 
-Using the url `https://www.payscale.com/research/IT/Job=Data_Engineer/Salary` we can see that is possible to automatically search the website by providing a country code and a job name.
+## Local configuration
 
-After searching for each country and each job we have to convert the salary from local currency to a common one (i.e. Euro in my case)
+To setup a new local enviroment and install all dependencies you can run `.\my_scripts\Set-Up.ps1`. It will install:
 
+* [Python](https://www.python.org/)
+* [uv](https://docs.astral.sh/uv/)
+* [Pre-commit](https://pre-commit.com/)
+
+## Code Quality
+
+Code quality is maintained through automated checks and linting using pre-commit.
+
+Pre-commit is a framework for managing and maintaining multi-language pre-commit hooks. A pre-commit hook is a script that runs before a commit operation in a version control system. This allows to shift left code quality checks and remediations. You can change the hooks by updateing the file `.pre-commit-config.yaml`.
+
+To trigger the pre-commit hooks without an actual commit you can run `pre-commit run --all-files -v`.
+
+It is also possible to run manully the individual tools:
+
+- `uv run ruff check --fix`
+- `uv run ruff format .`
+- `uv run pyright .`
+
+## Testing
+
+Tests are implemented using `pytest` and coverage is tracked with `pytest-cov`. The detailed coverage report is genarated by the pre-commit hook and it is available in [COVERAGE.md](COVERAGE.md) file.
+
+It is also possible to run manully the individual tests:
+
+- `uv run pytest`
+- `uv run pytest tests/test_dummy.py::test_dummy`
 
 ## Running the code
 
-From the project folder run `uv run python dash_salary_exploration.py` to start the dash application. The default url to connect to it is http://127.0.0.1:8050/.
+### Console
+
+You can run `uv run python salary_exploration.py`.
+
+### Web app
+
+You can run `uv run python dash_salary_exploration.py` to start the dash application. The default url to connect to it is http://127.0.0.1:8050/.
 
 <pre>
 |-- salary_exploration: project folder
@@ -81,17 +112,13 @@ The dash application
 
 Using the dropdown menu is possible to select the extraction to visualize.
 
-You can find more information in this [blog post](https://medium.com/@simone-rigoni01/salary-exploration-with-python-and-payscale-data-786e5557bcbc)
-
-
-
 ## List of activities
 
 In the [TODO.md](TODO.md) file you can find the list of tasks and ongoing activities.
 
-## Licensing and Acknowledgements
+## Licensing and acknowledgements
 
-Thanks [payscale.com](https://www.payscale.com/) for the data. Payscale offer a wide variety of products and services in the compensation technology. Check it out.
+Have a look at [LICENSE.md](LICENSE.md) and many thanks [payscale.com](https://www.payscale.com/) for the data. Payscale offer a wide variety of products and services in the compensation technology.
 
 ## Outro
 

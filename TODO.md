@@ -1,19 +1,18 @@
 # Salary exploration
 
-## Introduction
+## TODO
 
 Overview of the status of the tasks of this project.
 
 ## Tasks
 
-
 ### To do
 
-- [ ]
+- [ ] None
 
 ### In Progress
 
-- [ ]
+- [ ] None
 
 ### Done ✓
 
@@ -22,4 +21,4 @@ Overview of the status of the tasks of this project.
 - [x] Implement data trasformation
 - [x] Implement data visualization with dash
 - [x] Test end to end
-- [x] Move to uv
+- [x] Use uv and pre-commit
