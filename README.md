@@ -1,5 +1,6 @@
 # Salary exploration
 
+**Big refactor needed. Code is pretty messy. I'll do it as soon as I have some free time.**
 
 ## Introduction
  
