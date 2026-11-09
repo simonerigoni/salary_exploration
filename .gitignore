@@ -23,4 +23,5 @@ logs/
 .ruff_cache/
 
 # uv stuff
-uv.lock
+.coverage
+COVERAGE.md
