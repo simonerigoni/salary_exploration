@@ -14,7 +14,7 @@ import configuration
 
 
 def _get_country_code(country):
-    '''
+    """
     Get the country for a specific code
 
     Parameters:
@@ -22,18 +22,29 @@ def _get_country_code(country):
 
     Returns:
         country_code: Code of the searched country
-    '''
+    """
 
-    print('Get country code')
+    print("Get country code")
     country_code_countries = {}
 
     if os.path.isdir(configuration.DATA_FOLDER) is True:
-        if os.path.isfile(configuration.DATA_FOLDER + '/' + configuration.COUNTRY_CODE_COUNTRIES_FILENAME) is True:
-            with open(configuration.DATA_FOLDER + '/' + configuration.COUNTRY_CODE_COUNTRIES_FILENAME, 'rb') as input_file:
+        if (
+            os.path.isfile(
+                configuration.DATA_FOLDER + "/" + configuration.COUNTRY_CODE_COUNTRIES_FILENAME
+            )
+            is True
+        ):
+            with open(
+                configuration.DATA_FOLDER + "/" + configuration.COUNTRY_CODE_COUNTRIES_FILENAME,
+                "rb",
+            ) as input_file:
                 country_code_countries = pickle.load(input_file)
         else:
             country_code_countries = _get_country_code_countries()
-            with open(configuration.DATA_FOLDER + '/' + configuration.COUNTRY_CODE_COUNTRIES_FILENAME, 'wb') as output_file:
+            with open(
+                configuration.DATA_FOLDER + "/" + configuration.COUNTRY_CODE_COUNTRIES_FILENAME,
+                "wb",
+            ) as output_file:
                 pickle.dump(country_code_countries, output_file)
 
         if country in country_code_countries.values():
@@ -43,15 +54,15 @@ def _get_country_code(country):
                 else:
                     pass
         else:
-            print('Error: {} not found'.format(country))
+            print("Error: {} not found".format(country))
     else:
-        print('Error: {} folder not found'.format(configuration.DATA_FOLDER))
+        print("Error: {} folder not found".format(configuration.DATA_FOLDER))
 
     return None
 
 
 def _get_country_code_countries():
-    '''
+    """
     Scrape country codes and countries from web page
 
     Parameters:
@@ -59,49 +70,53 @@ def _get_country_code_countries():
 
     Returns:
         country_code_countries: dict with country codes and countries
-    '''
+    """
 
-    print('Get country code countries')
+    print("Get country code countries")
     country_code_countries = {}
-    url = 'https://www.payscale.com/research/Country'
+    url = "https://www.payscale.com/research/Country"
 
     time.sleep(configuration.SLEEP_TIME)
-    print('Connecting to {}'.format(url))
+    print("Connecting to {}".format(url))
     browser = webdriver.Firefox()
     browser.get(url)
-    #print(browser.title)
+    # print(browser.title)
 
-    if 'PayScale' in browser.title:
-        print('Extract country code')
+    if "PayScale" in browser.title:
+        print("Extract country code")
         time.sleep(configuration.SLEEP_TIME)
-        element = browser.find_element(by=By.XPATH, value = '/html/body/div[1]/div/div[2]/div/div[3]/div')
-        inner_html = element.get_attribute('innerHTML')
+        element = browser.find_element(
+            by=By.XPATH, value="/html/body/div[1]/div/div[2]/div/div[3]/div"
+        )
+        inner_html = element.get_attribute("innerHTML") or ""
 
-        inner_html = inner_html.replace('<div class="location__col location__col--full"><a href="', '')
-        href_locations = list(inner_html.split('</a></div>'))
+        inner_html = inner_html.replace(
+            '<div class="location__col location__col--full"><a href="', ""
+        )
+        href_locations = list(inner_html.split("</a></div>"))
 
         for href_location in href_locations:
             if len(href_location) > 0:
-                href_location = href_location.split('/Salary')[0]
-                href_location = href_location.replace('/research/', '')
-                country_code, country = href_location.split('/Country=')
+                href_location = href_location.split("/Salary")[0]
+                href_location = href_location.replace("/research/", "")
+                country_code, country = href_location.split("/Country=")
                 country_code_countries[country_code] = country
             else:
                 pass
 
-        #print(country_code_countries)
+        # print(country_code_countries)
 
         time.sleep(configuration.SLEEP_TIME)
-        print('Close the browser')
+        print("Close the browser")
         browser.quit()
     else:
-        print('Error: another page was expected')
+        print("Error: another page was expected")
 
     return country_code_countries
 
 
 def get_salary(country, job):
-    '''
+    """
     Scrape salaty from web page
 
     Parameters:
@@ -110,16 +125,16 @@ def get_salary(country, job):
 
     Returns:
         salary: salary
-    '''
-    
-    print('Get salary')
+    """
+
+    print("Get salary")
     salary = None
-    base_url = 'https://www.payscale.com/research/_COUNTRY_CODE_/Job=_JOB_NAME_/Salary'
+    base_url = "https://www.payscale.com/research/_COUNTRY_CODE_/Job=_JOB_NAME_/Salary"
 
-    country = country.replace(' ', '_')
-    job = job.replace(' ', '_')
+    country = country.replace(" ", "_")
+    job = job.replace(" ", "_")
 
-    print('Creating folders if needed')
+    print("Creating folders if needed")
     if os.path.isdir(configuration.DATA_FOLDER) is False:
         os.mkdir(configuration.DATA_FOLDER)
     else:
@@ -128,39 +143,39 @@ def get_salary(country, job):
     country_code = _get_country_code(country)
 
     if country_code is None:
-        print('Error: country code not found for {}'.format(country))
+        print("Error: country code not found for {}".format(country))
     else:
-        url = base_url.replace('_COUNTRY_CODE_', country_code).replace('_JOB_NAME_', job)
+        url = base_url.replace("_COUNTRY_CODE_", country_code).replace("_JOB_NAME_", job)
 
         time.sleep(configuration.SLEEP_TIME)
-        print('Connecting to {}'.format(url))
+        print("Connecting to {}".format(url))
         browser = webdriver.Firefox()
         browser.get(url)
-        #print(browser.title)
+        # print(browser.title)
 
-        if 'PayScale' in browser.title:
-            print('Extract salary')
+        if "PayScale" in browser.title:
+            print("Extract salary")
             time.sleep(configuration.SLEEP_TIME)
-            element = browser.find_element(by = By.CLASS_NAME, value = 'paycharts__value')
+            element = browser.find_element(by=By.CLASS_NAME, value="paycharts__value")
             salary = element.text
-            salary = salary.replace(',', '')
+            salary = salary.replace(",", "")
 
-            #print(salary)
+            # print(salary)
 
         else:
-            print('Error: another page was expected')
+            print("Error: another page was expected")
 
-        print('Close the browser')
+        print("Close the browser")
         time.sleep(configuration.SLEEP_TIME)
         browser.quit()
 
     return salary
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description = 'Extract data')
-    parser.add_argument('--country', type = str, default = 'Italy', help = 'Country to search')
-    parser.add_argument('--job', type = str, default = 'Data Engineer', help = 'Job to search')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Extract data")
+    parser.add_argument("--country", type=str, default="Italy", help="Country to search")
+    parser.add_argument("--job", type=str, default="Data Engineer", help="Job to search")
 
     args = parser.parse_args()
     # print(args)
