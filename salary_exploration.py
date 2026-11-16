@@ -3,11 +3,11 @@
 # python salary_exploration.py --date_string='20220530T103056Z'
 
 
-import os
 import argparse
 import datetime
-import pandas as pd
+import os
 
+import pandas as pd
 
 import configuration
 import extract_data
@@ -172,9 +172,7 @@ def get_country_job_salary_transformed(date_string):
     return df
 
 
-def _do_salary_exploration(
-    date_string=datetime.datetime.now().strftime(configuration.DATETIME_FORMAT),
-):
+def _do_salary_exploration(date_string=None):
     """
     Do salary exploration
 
@@ -183,6 +181,9 @@ def _do_salary_exploration(
     Returns:
         None
     """
+
+    if date_string is None:
+        date_string = datetime.datetime.now().strftime(configuration.DATETIME_FORMAT)
 
     print("Do salary exploration")
     _create_folders(date_string)
@@ -252,9 +253,7 @@ def _do_salary_exploration(
 
             for country in list_search_countries:
                 for job in list_search_jobs:
-                    output_file.write(
-                        "{},{},{}\n".format(country, job, extract_data.get_salary(country, job))
-                    )
+                    output_file.write(f"{country},{job},{extract_data.get_salary(country, job)}\n")
 
         print(
             "Move file {} in {}".format(
@@ -317,11 +316,7 @@ if __name__ == "__main__":
         )
 
     except ValueError:
-        print(
-            "Error: incorrect date string format. It should be {}".format(
-                configuration.DATETIME_FORMAT
-            )
-        )
+        print(f"Error: incorrect date string format. It should be {configuration.DATETIME_FORMAT}")
 
     # print(get_last_salary_exploration())
 else:
