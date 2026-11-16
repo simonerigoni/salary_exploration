@@ -7,7 +7,6 @@ import dash
 import dash_bootstrap_components as dbc
 import plotly.express as px
 
-
 import configuration
 import salary_exploration
 

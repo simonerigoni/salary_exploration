@@ -2,13 +2,13 @@
 #
 # python transform_data.py data/20220529T121639Z/country_job_salary.csv
 
-import os
 import argparse
+import os
 import time
+
+import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import pandas as pd
-
 
 import configuration
 
@@ -24,7 +24,7 @@ def convert_local_currency_to_euro(local_currency):
         None
     """
 
-    print("Convert local currency {} to euro".format(local_currency))
+    print(f"Convert local currency {local_currency} to euro")
     euro_amount = None
 
     if "€" in local_currency:
@@ -33,7 +33,7 @@ def convert_local_currency_to_euro(local_currency):
         url = "https://www.google.com/"
 
         time.sleep(configuration.SLEEP_TIME)
-        print("Connecting to {}".format(url))
+        print(f"Connecting to {url}")
         browser = webdriver.Firefox()
         browser.get(url)
         print(browser.title)
@@ -52,7 +52,7 @@ def convert_local_currency_to_euro(local_currency):
             time.sleep(configuration.SLEEP_TIME)
             print("Search for conversion")
             search_box = browser.find_element(by=By.NAME, value="q")
-            search_box.send_keys("{} to EUR".format(local_currency))
+            search_box.send_keys(f"{local_currency} to EUR")
             search_box.submit()
 
             time.sleep(configuration.SLEEP_TIME)

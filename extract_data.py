@@ -2,13 +2,13 @@
 #
 # python extract_data.py --country='United States' --job='Data Engineer'
 
-import os
 import argparse
+import os
+import pickle
 import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import pickle
-
 
 import configuration
 
@@ -54,9 +54,9 @@ def _get_country_code(country):
                 else:
                     pass
         else:
-            print("Error: {} not found".format(country))
+            print(f"Error: {country} not found")
     else:
-        print("Error: {} folder not found".format(configuration.DATA_FOLDER))
+        print(f"Error: {configuration.DATA_FOLDER} folder not found")
 
     return None
 
@@ -77,7 +77,7 @@ def _get_country_code_countries():
     url = "https://www.payscale.com/research/Country"
 
     time.sleep(configuration.SLEEP_TIME)
-    print("Connecting to {}".format(url))
+    print(f"Connecting to {url}")
     browser = webdriver.Firefox()
     browser.get(url)
     # print(browser.title)
@@ -143,12 +143,12 @@ def get_salary(country, job):
     country_code = _get_country_code(country)
 
     if country_code is None:
-        print("Error: country code not found for {}".format(country))
+        print(f"Error: country code not found for {country}")
     else:
         url = base_url.replace("_COUNTRY_CODE_", country_code).replace("_JOB_NAME_", job)
 
         time.sleep(configuration.SLEEP_TIME)
-        print("Connecting to {}".format(url))
+        print(f"Connecting to {url}")
         browser = webdriver.Firefox()
         browser.get(url)
         # print(browser.title)
