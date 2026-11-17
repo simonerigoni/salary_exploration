@@ -3,14 +3,26 @@
 # python transform_data.py data/20220529T121639Z/country_job_salary.csv
 
 import argparse
-import os
+import math
 import time
+from pathlib import Path
 
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 import configuration
+
+
+def _is_missing_amount(value):
+    """Return True for missing salary values (None, NaN, or the string 'None')."""
+    if value is None:
+        return True
+    if isinstance(value, float) and math.isnan(value):
+        return True
+    if isinstance(value, str) and value.strip() in {"", "None", "nan", "NaN"}:
+        return True
+    return False
 
 
 def convert_local_currency_to_euro(local_currency):
@@ -24,6 +36,10 @@ def convert_local_currency_to_euro(local_currency):
         None
     """
 
+    if _is_missing_amount(local_currency):
+        return None
+
+    local_currency = str(local_currency)
     print(f"Convert local currency {local_currency} to euro")
     euro_amount = None
 
@@ -109,32 +125,34 @@ def transform_salary(input_filename, output_filename):
     """
 
     print("Create a CSV file with transformed salary")
-    if os.path.isfile(input_filename) is False:
-        print("Error: file {} not found")
+    input_path = Path(input_filename)
+    output_path = Path(output_filename)
+    if not input_path.is_file():
+        print(f"Error: file {input_path} not found")
+    elif input_path.suffix.lower() != ".csv":
+        print(
+            "Error: {} file extension not supported. {} expected".format(
+                input_path.suffix.lstrip("."), "csv"
+            )
+        )
+    elif output_path.is_file():
+        pass
     else:
-        filename, extension = input_filename.split(".")
+        df = pd.read_csv(input_path)
+        with open(output_path, "w") as output_file:
+            output_file.write("Country,Job,Local Currency Salary,Euro Salary\n")
 
-        if extension == "csv":
-            if os.path.isfile(output_filename) is False:
-                df = pd.read_csv(input_filename)
-                with open(output_filename, "w") as output_file:
-                    output_file.write("Country,Job,Local Currency Salary,Euro Salary\n")
-
-                    for record in df.to_dict(orient="records"):
-                        salary = record["Salary"]
-                        if salary == "None":
-                            pass
-                        else:
-                            euro_salary = convert_local_currency_to_euro(salary)
-                            output_file.write(
-                                "{},{},{},{}\n".format(
-                                    record["Country"], record["Job"], salary, euro_salary
-                                )
-                            )
-            else:
-                pass
-        else:
-            print("Error: {} file extension not supported. {} expected".format(extension, "csv"))
+            for record in df.to_dict(orient="records"):
+                salary = record["Salary"]
+                if _is_missing_amount(salary):
+                    pass
+                else:
+                    euro_salary = convert_local_currency_to_euro(salary)
+                    output_file.write(
+                        "{},{},{},{}\n".format(
+                            record["Country"], record["Job"], salary, euro_salary
+                        )
+                    )
 
 
 if __name__ == "__main__":
