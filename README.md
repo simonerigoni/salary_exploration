@@ -16,7 +16,7 @@ This project uses Python 3.15 and the following libraries:
 * [Selenium](https://pypi.org/project/selenium/)
 * [dash](https://dash.plotly.com/)
 
-More informations in `requirements.txt`. To create it I have used `python -m pip freeze > requirements.txt`. To install all Python packages written in the requirements.txt file run `pip install -r requirements.txt`.
+Set up the project with `uv sync` from the project folder. Then run checks with `uv run pre-commit run --all-files` or `uv run pytest`.
 
 
 ## Data
@@ -30,7 +30,7 @@ After searching for each country and each job we have to convert the salary from
 
 ## Running the code
 
-From the project folder run `python dash_salary_exploration.py` to start the dash application. The default url to connect to it is http://127.0.0.1:8050/.
+From the project folder run `uv run python dash_salary_exploration.py` to start the dash application. The default url to connect to it is http://127.0.0.1:8050/.
 
 <pre>
 |-- salary_exploration: project folder
