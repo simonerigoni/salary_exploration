@@ -18,7 +18,6 @@ dependencies = [
 
 
 [project.urls]
-Homepage = "https://github.com/simonerigoni/salary_exploration"
 Repository = "https://github.com/simonerigoni/salary_exploration"
 Medium = "https://medium.com/@simone-rigoni01/salary-exploration-with-python-and-payscale-data-786e5557bcbc"
 
