@@ -11,7 +11,7 @@ The idea is to automatically search on [payscale.com](https://www.payscale.com/)
 
 ## Software and Libraries
 
-This project uses Python 3.9.2 and the following libraries:
+This project uses Python 3.15 and the following libraries:
 * [Pandas](http://pandas.pydata.org)
 * [Selenium](https://pypi.org/project/selenium/)
 * [dash](https://dash.plotly.com/)
