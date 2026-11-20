@@ -85,6 +85,14 @@ You can find more information in this [blog post](https://simone-rigoni01.medium
 
 
 
+## List of activities
+
+In the [TODO.md](TODO.md) file you can find the list of tasks and on going activities.
+
 ## Licensing and Acknowledgements
 
 Thanks [payscale.com](https://www.payscale.com/) for the data. Payscale offer a wide variety of products and services in the compensation technology. Check it out.
+
+## Outro
+
+I hope this repository was interesting and thank you for taking the time to check it out. On my Medium you can find a more in depth [story](https://medium.com/@simone-rigoni01/salary-exploration-with-python-and-payscale-data-786e5557bcbc). Let me know if you have any question and if you like the content that I create feel free to [buy me a coffee](https://www.buymeacoffee.com/simonerigoni).
