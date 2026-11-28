@@ -27,6 +27,11 @@ dev = [
     "pytest-cov>=7.1.0",
     "ruff>=0.14.6",
 ]
+notebook = [
+    "beautifulsoup4>=4.13.0",
+    "ipykernel>=6.29.5",
+    "requests>=2.32.0",
+]
 
 [project.scripts]
 salary-exploration = "salary_exploration.exploration:main"

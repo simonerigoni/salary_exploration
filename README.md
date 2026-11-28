@@ -22,6 +22,12 @@ Have a look at the `data` folder and its [DATA.md](data/DATA.md) file.
 
 To set up a local environment and install all dependencies, run `uv sync` from the project folder.
 
+The notebooks need a few extra libraries. Install them with:
+
+```bash
+uv sync --group notebook
+```
+
 Then run the checks with:
 
 ```bash
