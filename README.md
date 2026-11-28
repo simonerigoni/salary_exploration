@@ -65,7 +65,7 @@ You can run `uv run python dash_salary_exploration.py` to start the dash applica
 
 <pre>
 |-- salary_exploration: project folder
-    |-- dash_salary_exploration.py: web application module for visualize the data
+    |-- dash_app.py: web application module for visualize the data
     |-- salary_exploration.py: module for search organizazion
     |-- transform_data.py: module for data transformation
     |-- extract_data.py: module for data extraction

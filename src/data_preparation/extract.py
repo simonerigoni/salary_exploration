@@ -1,23 +1,29 @@
 # Scrape data from https://www.payscale.com/research/IT/Job=Data_Engineer/Salary
 #
-# python extract_data.py --country='United States' --job='Data Engineer'
+# python -m src.data_preparation.extract --country='United States' --job='Data Engineer'
 
-import argparse
 import os
-import pickle
+import argparse
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import pickle
 
-import configuration
+
+from src.config import (
+    DATA_FOLDER,
+    SLEEP_TIME,
+    DEAFULT_COUNTRY_SEARCH,
+    COUNTRY_CODE_COUNTRIES_FILENAME,
+    DEAFULT_JOB_SEARCH,
+)
 
 
-def _get_country_code(country):
+def _get_country_code(country: str) -> str:
     """
     Get the country for a specific code
 
-    Parameters:
+    Args:
         country: Country to search
 
     Returns:
@@ -27,23 +33,16 @@ def _get_country_code(country):
     print("Get country code")
     country_code_countries = {}
 
-    if os.path.isdir(configuration.DATA_FOLDER) is True:
-        if (
-            os.path.isfile(
-                configuration.DATA_FOLDER + "/" + configuration.COUNTRY_CODE_COUNTRIES_FILENAME
-            )
-            is True
-        ):
+    if os.path.isdir(DATA_FOLDER) is True:
+        if os.path.isfile(DATA_FOLDER + "/" + COUNTRY_CODE_COUNTRIES_FILENAME) is True:
             with open(
-                configuration.DATA_FOLDER + "/" + configuration.COUNTRY_CODE_COUNTRIES_FILENAME,
-                "rb",
+                DATA_FOLDER + "/" + COUNTRY_CODE_COUNTRIES_FILENAME, "rb"
             ) as input_file:
                 country_code_countries = pickle.load(input_file)
         else:
             country_code_countries = _get_country_code_countries()
             with open(
-                configuration.DATA_FOLDER + "/" + configuration.COUNTRY_CODE_COUNTRIES_FILENAME,
-                "wb",
+                DATA_FOLDER + "/" + COUNTRY_CODE_COUNTRIES_FILENAME, "wb"
             ) as output_file:
                 pickle.dump(country_code_countries, output_file)
 
@@ -54,18 +53,18 @@ def _get_country_code(country):
                 else:
                     pass
         else:
-            print(f"Error: {country} not found")
+            print("Error: {} not found".format(country))
     else:
-        print(f"Error: {configuration.DATA_FOLDER} folder not found")
+        print("Error: {} folder not found".format(DATA_FOLDER))
 
     return None
 
 
-def _get_country_code_countries():
+def _get_country_code_countries() -> dict:
     """
     Scrape country codes and countries from web page
 
-    Parameters:
+    Args:
         None
 
     Returns:
@@ -76,19 +75,19 @@ def _get_country_code_countries():
     country_code_countries = {}
     url = "https://www.payscale.com/research/Country"
 
-    time.sleep(configuration.SLEEP_TIME)
-    print(f"Connecting to {url}")
+    time.sleep(SLEEP_TIME)
+    print("Connecting to {}".format(url))
     browser = webdriver.Firefox()
     browser.get(url)
     # print(browser.title)
 
     if "PayScale" in browser.title:
         print("Extract country code")
-        time.sleep(configuration.SLEEP_TIME)
+        time.sleep(SLEEP_TIME)
         element = browser.find_element(
             by=By.XPATH, value="/html/body/div[1]/div/div[2]/div/div[3]/div"
         )
-        inner_html = element.get_attribute("innerHTML") or ""
+        inner_html = element.get_attribute("innerHTML")
 
         inner_html = inner_html.replace(
             '<div class="location__col location__col--full"><a href="', ""
@@ -106,7 +105,7 @@ def _get_country_code_countries():
 
         # print(country_code_countries)
 
-        time.sleep(configuration.SLEEP_TIME)
+        time.sleep(SLEEP_TIME)
         print("Close the browser")
         browser.quit()
     else:
@@ -115,11 +114,11 @@ def _get_country_code_countries():
     return country_code_countries
 
 
-def get_salary(country, job):
+def get_salary(country: str, job: str) -> str:
     """
     Scrape salaty from web page
 
-    Parameters:
+    Args:
         country: Country to search
         job: job name to search
 
@@ -135,27 +134,29 @@ def get_salary(country, job):
     job = job.replace(" ", "_")
 
     print("Creating folders if needed")
-    if os.path.isdir(configuration.DATA_FOLDER) is False:
-        os.mkdir(configuration.DATA_FOLDER)
+    if os.path.isdir(DATA_FOLDER) is False:
+        os.mkdir(DATA_FOLDER)
     else:
         pass
 
     country_code = _get_country_code(country)
 
     if country_code is None:
-        print(f"Error: country code not found for {country}")
+        print("Error: country code not found for {}".format(country))
     else:
-        url = base_url.replace("_COUNTRY_CODE_", country_code).replace("_JOB_NAME_", job)
+        url = base_url.replace("_COUNTRY_CODE_", country_code).replace(
+            "_JOB_NAME_", job
+        )
 
-        time.sleep(configuration.SLEEP_TIME)
-        print(f"Connecting to {url}")
+        time.sleep(SLEEP_TIME)
+        print("Connecting to {}".format(url))
         browser = webdriver.Firefox()
         browser.get(url)
         # print(browser.title)
 
         if "PayScale" in browser.title:
             print("Extract salary")
-            time.sleep(configuration.SLEEP_TIME)
+            time.sleep(SLEEP_TIME)
             element = browser.find_element(by=By.CLASS_NAME, value="paycharts__value")
             salary = element.text
             salary = salary.replace(",", "")
@@ -166,16 +167,21 @@ def get_salary(country, job):
             print("Error: another page was expected")
 
         print("Close the browser")
-        time.sleep(configuration.SLEEP_TIME)
+        time.sleep(SLEEP_TIME)
         browser.quit()
 
     return salary
 
 
 if __name__ == "__main__":
+    print("Extract data")
     parser = argparse.ArgumentParser(description="Extract data")
-    parser.add_argument("--country", type=str, default="Italy", help="Country to search")
-    parser.add_argument("--job", type=str, default="Data Engineer", help="Job to search")
+    parser.add_argument(
+        "--country", type=str, default=DEAFULT_COUNTRY_SEARCH, help="Country to search"
+    )
+    parser.add_argument(
+        "--job", type=str, default=DEAFULT_JOB_SEARCH, help="Job to search"
+    )
 
     args = parser.parse_args()
     # print(args)

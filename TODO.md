@@ -22,3 +22,4 @@ Overview of the status of the tasks of this project.
 - [x] Implement data visualization with dash
 - [x] Test end to end
 - [x] Use uv and pre-commit
+- [x] Add CI
