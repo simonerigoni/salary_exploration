@@ -8,7 +8,7 @@ Overview of the status of the tasks of this project.
 
 ### To do
 
-- [ ] Update the flowchart in images/flowchart.png to the src/salary_exploration layout
+- [ ] None
 
 ### In Progress
 
@@ -16,6 +16,7 @@ Overview of the status of the tasks of this project.
 
 ### Done ✓
 
+- [x] Update the flowchart in images/flowchart.png to the src/salary_exploration layout
 - [x] Project initialization
 - [x] Implement data extraction
 - [x] Implement data transformation

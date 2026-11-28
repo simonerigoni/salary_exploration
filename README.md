@@ -102,7 +102,7 @@ uv run salary-exploration --date_string 20260310T115628Z
 
 ![Flowchart](images/flowchart.png)
 
-Flowchart made using [draw.io](https://about.draw.io/). The white arrow indicates a flow of data while the black one indicates a call of functionalities.
+Flowchart generated from [images/flowchart.dot](images/flowchart.dot) with [Graphviz](https://graphviz.org/). The white arrow indicates a flow of data while the black one indicates a call of functionalities.
 
 ### Web app
 

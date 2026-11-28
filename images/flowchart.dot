@@ -1,0 +1,74 @@
+// Regenerated from this file with Graphviz neato.
+// Positions are in points (72 per inch).
+//
+//   neato -n2 -Tpng:cairo -Gdpi=150 -o images/flowchart.png images/flowchart.dot
+digraph salary_exploration {
+    graph [
+        bgcolor=white
+        fontname="Liberation Sans"
+        fontsize=12
+        pad=0.8
+        splines=true
+        outputorder=edgesfirst
+        label="\nWhite arrows: data flow     Black arrows: function calls"
+        labelloc=b
+    ]
+    node [
+        fontname="Liberation Sans"
+        fontsize=12
+        color=black
+        fontcolor=black
+    ]
+
+    // Package frame, listed first so the modules sit on top of it.
+    pkg [
+        shape=box
+        style=rounded
+        label="src/salary_exploration"
+        labelloc=b
+        fontname="Liberation Sans"
+        fontsize=11
+        width=6.0
+        height=5.15
+        pos="403.2,248.4!"
+        color=black
+        penwidth=1.0
+    ]
+
+    node [shape=box, style=rounded, height=0.5, width=1.7]
+    cli [label="salary-exploration" pos="288.0,504.0!"]
+    dash_app [label="dash_app.py" pos="518.4,504.0!"]
+    exploration [label="exploration.py" pos="403.2,385.2!"]
+    extract [label="extract.py" pos="273.6,255.6!"]
+    transform [label="transform.py" pos="532.8,255.6!"]
+    browser [label="browser.py" pos="403.2,140.4!"]
+    config [label="config.py" pos="273.6,140.4!"]
+
+    node [shape=cylinder, style=solid, width=2.45, height=0.85, fontsize=11]
+    search_countries [label="search/\ncountries.csv" pos="32.4,446.4!"]
+    search_jobs [label="search/\njobs.csv" pos="32.4,352.8!"]
+    codes [label="data/\ncountry_code_countries.pk" pos="32.4,133.2!"]
+    salary [label="data/<YYYYMMDDTHHMMSSZ>/\ncountry_job_salary.csv" pos="795.6,255.6!"]
+    salary_eur [label="data/<YYYYMMDDTHHMMSSZ>/\ncountry_job_salary_transformed.csv" pos="795.6,122.4!"]
+
+    wp [shape=point, width=0.01, height=0.01, label="", style=invis, pos="795.6,504.0!"]
+
+    // Function calls (black, filled)
+    edge [arrowhead=normal, penwidth=1.2, color=black]
+    cli -> exploration
+    dash_app -> exploration
+    exploration -> extract
+    exploration -> transform
+    extract -> browser
+    transform -> browser
+
+    // Data flow (outlined / white arrows)
+    edge [color="#000000:#ffffff:#000000", arrowhead=empty, arrowsize=1.15, penwidth=3.2]
+    search_countries -> exploration
+    search_jobs -> exploration
+    exploration -> salary
+    salary -> transform
+    transform -> salary_eur
+    salary_eur -> wp -> dash_app
+    extract -> codes [dir=both, arrowhead=empty, arrowtail=empty, arrowsize=1.15]
+}
