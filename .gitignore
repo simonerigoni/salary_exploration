@@ -17,6 +17,7 @@ temp/
 
 # pytest-cov stuff
 .coverage
+COVERAGE.md
 
 # Local secrets and logs
 .env
