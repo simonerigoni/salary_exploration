@@ -23,6 +23,7 @@ Medium = "https://medium.com/@simone-rigoni01/salary-exploration-with-python-and
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.7.0",
     "pyright>=1.1.408",
     "pytest-cov>=7.1.0",
     "ruff>=0.14.6",
